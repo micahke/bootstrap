@@ -1,0 +1,5 @@
+NO_CONFIG_FOUND = "No config found. Please create a .bootstrap file and try again."
+
+NO_PROJECT_NAME = "No project name has been set. Please set the `project` value in your bootstrap file"
+
+NO_API_KEY = "No OpenAI API key located. Please set `OPENAI_API_KEY in your path or run 'bootstrap --key YOUR_KEY' to do this for you."
