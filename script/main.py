@@ -1,7 +1,11 @@
 import argparse
 from data.config import Config
+from process.build import BuildProcess
+from process.delete import DeleteProcess
+from process.generation import GenerationProcess
+from process.keyprocess import KeyProcess
 from util.fs import config_exists, read_config, bootstrap_dir_exists, create_bootstrap_dir, delete_bootstrap_dir
-from data.errors import NO_CONFIG_FOUND
+from data.errors import NO_CONFIG_FOUND, NO_QUERY_PROVIDED
 from util.parsers import parse_config_file
 from util.walker import FileWalker
 from llm.llama_index import LlamaClient
@@ -11,23 +15,8 @@ parser = argparse.ArgumentParser(description="Enter your bootstrap command")
 parser.add_argument("-b", "--build", action="store_true")
 parser.add_argument("-d","--delete", action="store_true")
 parser.add_argument("prompt", nargs="?", default="")
+parser.add_argument("--key", type=str)
 
-def build(config: Config, client: LlamaClient):
-    files = FileWalker(config, ".").walk()
-    docs = []
-    for file in files:
-        docs.append(client.generate_doc(file))
-
-    nodes = client.parse_nodes(docs)
-    index = client.generate_index_from_nodes(nodes)
-    client.save_index(index)
-
-def handle_prompt(client: LlamaClient, prompt: str):
-    index = client.load_index()
-    client.query(index, prompt)
-
-def delete():
-    delete_bootstrap_dir()
 
 def main():
     args = parser.parse_args()
@@ -38,24 +27,28 @@ def main():
     cfg_src = read_config()
     config = parse_config_file(cfg_src)
 
+    if args.key:
+        KeyProcess(args.key).run()
+
     client = LlamaClient()
 
     if not bootstrap_dir_exists():
         create_bootstrap_dir()
 
+
     if args.build:
-        build(config, client)
+        BuildProcess(config, client).run()
         exit(0)
 
     if args.delete:
-        delete()
+        DeleteProcess().run()
         exit(0)
 
     prompt = args.prompt
     if prompt:
-        handle_prompt(client, prompt)
+        GenerationProcess(client, prompt).run()
     else:
-        print("No query provided")
+        print(NO_QUERY_PROVIDED)
 
 
 
