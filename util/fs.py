@@ -1,4 +1,5 @@
 import os
+import shutil
 
 BOOTSTRAP_FILE_NAME = ".bootstrap"
 
@@ -23,6 +24,20 @@ def bootstrap_dir_exists() -> bool:
     rootdir = os.getcwd()
     path = os.path.join(rootdir, ".boot")
     if os.path.exists(path):
-        print("okay")
+        return True
+    return False
 
-    return True
+def create_bootstrap_dir():
+    rootdir = os.getcwd()
+    path = os.path.join(rootdir, ".boot")
+    os.mkdir(path)
+    os.mkdir(os.path.join(path, "storage"))
+
+def get_bootstrap_dir():
+    rootdir = os.getcwd()
+    return os.path.join(rootdir, ".boot")
+
+
+def delete_bootstrap_dir():
+    dir = get_bootstrap_dir()
+    shutil.rmtree(dir)
