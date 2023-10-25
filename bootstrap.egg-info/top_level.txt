@@ -1,5 +1,0 @@
-data
-llm
-process
-script
-util
