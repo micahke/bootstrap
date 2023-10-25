@@ -1,4 +1,5 @@
 import argparse
+from data.config import Config
 from util.fs import config_exists, read_config, bootstrap_dir_exists, create_bootstrap_dir, delete_bootstrap_dir
 from data.errors import NO_CONFIG_FOUND
 from util.parsers import parse_config_file
@@ -11,7 +12,7 @@ parser.add_argument("-b", "--build", action="store_true")
 parser.add_argument("-d","--delete", action="store_true")
 parser.add_argument("prompt", nargs="?", default="")
 
-def build(client: LlamaClient):
+def build(config: Config, client: LlamaClient):
     files = FileWalker(config, ".").walk()
     docs = []
     for file in files:
@@ -28,7 +29,7 @@ def handle_prompt(client: LlamaClient, prompt: str):
 def delete():
     delete_bootstrap_dir()
 
-if __name__ == "__main__":
+def main():
     args = parser.parse_args()
 
     if not config_exists():
@@ -43,7 +44,7 @@ if __name__ == "__main__":
         create_bootstrap_dir()
 
     if args.build:
-        build(client)
+        build(config, client)
         exit(0)
 
     if args.delete:
@@ -56,8 +57,7 @@ if __name__ == "__main__":
     else:
         print("No query provided")
 
-    # query = "What does this program do?"
-    # client.query(index, query)
 
 
-
+if __name__ == "__main__":
+    main()
