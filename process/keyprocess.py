@@ -8,5 +8,5 @@ class KeyProcess(Process):
         super().__init__()
         self.key = key
 
-    def run(self):
+    def run(self, args: None):
         os.environ['OPENAI_API_KEY'] = self.key

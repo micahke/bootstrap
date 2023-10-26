@@ -1,6 +1,6 @@
 .venv
 .bootstrap
-.boot
+# .boot
 __pycache__
 .build
 .idea

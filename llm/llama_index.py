@@ -1,3 +1,4 @@
+import hashlib
 from pydoc import text
 from typing import List
 from llama_index.indices.base import BaseIndex
@@ -26,13 +27,17 @@ class LlamaClient:
     def generate_doc(self, filepath: str) -> Document:
         filename = filepath.split('/')[-1]
         relative_path = os.path.relpath(filepath, os.getcwd())
-        return Document(
+        doc =  Document(
             text=read_file(filepath),
             extra_info={
                 "file_name": filename,
                 "relative_path": relative_path
             }
         )
+        # Set the ID as the MD5 hash of the filepath 
+        hash = hashlib.md5(filepath.encode()).hexdigest()
+        doc.id_ = hash
+        return doc
 
 
     def parse_nodes(self, docs: List[Document]) -> List[BaseNode]:
@@ -58,7 +63,7 @@ class LlamaClient:
         print('\n')
         response.print_response_stream()
 
-    def save_index(self, index: VectorStoreIndex):
+    def save_index(self, index: BaseIndex):
         storagepath = os.path.join(get_bootstrap_dir(), "storage")
         index.storage_context.persist(storagepath)
 

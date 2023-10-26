@@ -1,5 +1,6 @@
 import argparse
 from data.config import Config
+from data.snapshot import Snapshot
 from process.build import BuildProcess
 from process.delete import DeleteProcess
 from process.generation import GenerationProcess
