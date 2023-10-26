@@ -14,3 +14,4 @@ class GenerationProcess(Process):
         self.client.query(index, self.prompt)
 
 
+
