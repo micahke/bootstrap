@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'bootstrap = main.script:main',   
+            'bootstrap = script.main:main',   
         ],
     },
     install_requires=[
