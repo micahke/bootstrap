@@ -5,6 +5,7 @@ from process.build import BuildProcess
 from process.delete import DeleteProcess
 from process.generation import GenerationProcess
 from process.keyprocess import KeyProcess
+from process.update import UpdateProcess
 from util.fs import config_exists, read_config, bootstrap_dir_exists, create_bootstrap_dir, delete_bootstrap_dir
 from data.errors import NO_CONFIG_FOUND, NO_QUERY_PROVIDED
 from util.parsers import parse_config_file
@@ -15,6 +16,7 @@ parser = argparse.ArgumentParser(description="Enter your bootstrap command")
 subparsers = parser.add_subparsers(dest="command")
 
 build_parser = subparsers.add_parser("build")
+build_parser = subparsers.add_parser("update")
 delete_parser = subparsers.add_parser("delete")
 ask_parser = subparsers.add_parser("ask")
 ask_parser.add_argument('prompt', nargs="?", default="")
@@ -42,9 +44,12 @@ def main():
     if not bootstrap_dir_exists():
         create_bootstrap_dir()
 
-
     if args.command == 'build':
         BuildProcess(config, client).run()
+        exit(0)
+
+    if args.command == 'update':
+        UpdateProcess(config, client).run()
         exit(0)
 
     if args.command == 'delete': 
