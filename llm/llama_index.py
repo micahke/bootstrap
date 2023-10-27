@@ -9,6 +9,7 @@ import openai
 import os
 from data.errors import NO_API_KEY
 from llama_index import Document, ServiceContext, StorageContext, VectorStoreIndex, load_index_from_storage
+from loader.customloader import CustomLoader
 from util.fs import read_file
 from llama_index.node_parser import SimpleNodeParser
 from llama_index.llms import OpenAI
@@ -26,13 +27,20 @@ class LlamaClient:
     def generate_doc(self, filepath: str) -> Document:
         filename = filepath.split('/')[-1]
         relative_path = os.path.relpath(filepath, os.getcwd())
-        doc =  Document(
-            text=read_file(filepath),
-            extra_info={
+        doc = CustomLoader.load(filepath)
+        if doc:
+            doc.metadata = {
                 "file_name": filename,
                 "relative_path": relative_path
             }
-        )
+        else:
+            doc =  Document(
+                text=read_file(filepath),
+                extra_info={
+                    "file_name": filename,
+                    "relative_path": relative_path
+                }
+            )
         # Set the ID as the MD5 hash of the filepath 
         hash = hashlib.md5(filepath.encode()).hexdigest()
         doc.id_ = hash
