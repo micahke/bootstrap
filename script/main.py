@@ -1,12 +1,9 @@
 import argparse
-from data.config import Config
-from data.snapshot import Snapshot
 from process.build import BuildProcess
 from process.delete import DeleteProcess
 from process.generation import GenerationProcess
-from process.keyprocess import KeyProcess
 from process.update import UpdateProcess
-from util.fs import config_exists, read_config, bootstrap_dir_exists, create_bootstrap_dir, delete_bootstrap_dir
+from util.fs import config_exists, read_config, bootstrap_dir_exists, create_bootstrap_dir
 from data.errors import NO_CONFIG_FOUND, NO_QUERY_PROVIDED
 from util.parsers import parse_config_file
 from util.walker import FileWalker
@@ -20,11 +17,6 @@ build_parser = subparsers.add_parser("update")
 delete_parser = subparsers.add_parser("delete")
 ask_parser = subparsers.add_parser("ask")
 ask_parser.add_argument('prompt', nargs="?", default="")
-
-# parser.add_argument("-b", "--build", action="store_true")
-# parser.add_argument("-d","--delete", action="store_true")
-# parser.add_argument("-q", "--query", nargs="?", default="")
-# parser.add_argument("--key", type=str)
 
 
 def main():

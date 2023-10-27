@@ -1,10 +1,8 @@
-import hashlib
-from typing import Any, List
+from typing import Any 
 from data.config import Config
 from data.snapshot import Snapshot
 from llm.llama_index import LlamaClient
 from process.process import Process
-from util.fs import snapshot_exists
 from util.walker import FileWalker
 
 class BuildProcess(Process):

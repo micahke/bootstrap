@@ -1,7 +1,5 @@
 import hashlib
-from pydoc import text
 from typing import List
-import llama_index
 from llama_index.indices.base import BaseIndex
 from llama_index.schema import BaseNode
 from llama_index.storage.docstore.simple_docstore import SimpleDocumentStore
