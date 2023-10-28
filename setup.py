@@ -10,6 +10,6 @@ setup(
         ],
     },
     install_requires=[
-        req.strip() for req in open('requirements.txt').readlines()
+        req.strip() for req in open('./requirements.txt').readlines()
     ],
 )
