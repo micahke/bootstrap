@@ -8,7 +8,7 @@ from llama_index.vector_stores.simple import SimpleVectorStore
 import openai
 import os
 from data.errors import NO_API_KEY
-from llama_index import Document, ServiceContext, StorageContext, VectorStoreIndex, load_index_from_storage
+from llama_index import Document, ServiceContext, StorageContext, TreeIndex, VectorStoreIndex, load_index_from_storage
 from loader.customloader import CustomLoader
 from util.fs import read_file
 from llama_index.node_parser import SimpleNodeParser
@@ -70,7 +70,6 @@ class LlamaClient:
 
         print('\n')
 
-        response_text = None
         if hasattr(response, 'response_gen') and response.response_gen is not None:
             response_txt = ""
             for text in response.response_gen:
