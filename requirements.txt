@@ -4,7 +4,6 @@ annotated-types==0.6.0
 anyio==3.7.1
 async-timeout==4.0.3
 attrs==23.1.0
-bootstrap @ file:///Users/yumyumcurryman/Documents/bootstrap
 certifi==2023.7.22
 charset-normalizer==3.3.1
 click==8.1.7
