@@ -44,7 +44,7 @@ index:
 
 > Make sure that
 
-Bootstrap has 3 main commands: `build`, `ask`, and `delete`. In order to build an index from your code, simply run the following:
+Bootstrap has 4 main commands: `build`, `update`, `ask`, and `delete`. In order to build an index from your code, simply run the following:
 
 ```sh
 bootstrap build
@@ -56,6 +56,12 @@ Once built, you can ask a question like this:
 
 ```sh
 bootstrap ask "How does the event system work in this project?"
+```
+
+Indexes can also be updated to reflect the latest changes in your project without rebuilding from scratch. Bootstrap will detect which files have been added, changed, or deleted and will update the index accordingly:
+
+```sh
+bootstrap update
 ```
 
 To delete the index, simply run `bootstrap delete`.
