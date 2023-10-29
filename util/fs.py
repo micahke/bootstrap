@@ -1,7 +1,8 @@
 import os
 import shutil
 
-BOOTSTRAP_FILE_NAME = ".bootstrap"
+BOOTSTRAP_FILE_NAME = "boot.yaml"
+BOOTSTRAP_DIRECTORY = ".bootstrap"
 
 def read_config() -> str:
     rootdir = os.getcwd()
@@ -22,20 +23,20 @@ def read_file(filepath: str) -> str:
 
 def bootstrap_dir_exists() -> bool:
     rootdir = os.getcwd()
-    path = os.path.join(rootdir, ".boot")
+    path = os.path.join(rootdir, BOOTSTRAP_DIRECTORY)
     if os.path.exists(path):
         return True
     return False
 
 def create_bootstrap_dir():
     rootdir = os.getcwd()
-    path = os.path.join(rootdir, ".boot")
+    path = os.path.join(rootdir, BOOTSTRAP_DIRECTORY)
     os.mkdir(path)
     os.mkdir(os.path.join(path, "storage"))
 
 def get_bootstrap_dir():
     rootdir = os.getcwd()
-    return os.path.join(rootdir, ".boot")
+    return os.path.join(rootdir, BOOTSTRAP_DIRECTORY)
 
 
 def delete_bootstrap_dir():

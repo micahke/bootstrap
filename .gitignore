@@ -1,5 +1,5 @@
 .venv
-.boot
+.bootstrap
 __pycache__
 build
 bootstrap.egg-info
