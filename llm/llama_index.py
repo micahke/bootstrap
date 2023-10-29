@@ -7,6 +7,7 @@ from llama_index.storage.index_store.simple_index_store import SimpleIndexStore
 from llama_index.vector_stores.simple import SimpleVectorStore
 import openai
 import os
+from data.config import IndexType
 from data.errors import NO_API_KEY
 from llama_index import Document, ServiceContext, StorageContext, TreeIndex, VectorStoreIndex, load_index_from_storage
 from loader.customloader import CustomLoader
@@ -55,12 +56,16 @@ class LlamaClient:
         nodes = parser.get_nodes_from_documents(docs)
         return nodes
 
-    def generate_index_from_nodes(self, nodes: List[BaseNode]) -> VectorStoreIndex:
+    def generate_index_from_nodes(self, index_type: IndexType, nodes: List[BaseNode], progress: bool = False) -> BaseIndex:
         llm = OpenAI(model='gpt-4', temperature=0.1)
         service_context = ServiceContext.from_defaults(
             llm=llm
         )
-        index = VectorStoreIndex(nodes, service_context=service_context)
+        index = None
+        if index_type == IndexType.TREE:
+            index = TreeIndex(nodes, service_context=service_context, show_progress=progress)
+        else:
+            index = VectorStoreIndex(nodes, service_context=service_context, show_progress=progress)
         return index
 
 

@@ -1,0 +1,9 @@
+project: bootstrap
+description: A small tool to analyze your projects using AI
+
+filetypes: [".py", ".txt", ".bootstrap", ".docx", ".pdf"]
+excluded_dirs: [".venv", "build", "bootstrap.egg-info"]
+
+index:
+  type: vector
+  verbose: true

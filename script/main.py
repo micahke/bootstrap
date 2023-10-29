@@ -13,8 +13,11 @@ parser = argparse.ArgumentParser(description="Enter your bootstrap command")
 subparsers = parser.add_subparsers(dest="command")
 
 build_parser = subparsers.add_parser("build")
-build_parser = subparsers.add_parser("update")
+build_parser.add_argument("-v", "--verbose", action="store_true")
+
+update_parser = subparsers.add_parser("update")
 delete_parser = subparsers.add_parser("delete")
+
 ask_parser = subparsers.add_parser("ask")
 ask_parser.add_argument('prompt', nargs="?", default="")
 
@@ -28,16 +31,13 @@ def main():
     cfg_src = read_config()
     config = parse_config_file(cfg_src)
 
-    # if args.key:
-    #     KeyProcess(args.key).run()
-
     client = LlamaClient()
 
     if not bootstrap_dir_exists():
         create_bootstrap_dir()
 
     if args.command == 'build':
-        BuildProcess(config, client).run()
+        BuildProcess(config, client).run(args)
         exit(0)
 
     if args.command == 'update':

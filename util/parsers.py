@@ -1,6 +1,6 @@
 import yaml
-from data.config import Config
-from data.errors import NO_PROJECT_NAME
+from data.config import Config, IndexType
+from data.errors import NO_PROJECT_NAME, NON_BOOLEAN
 
 
 def parse_config_file(src: str) -> Config:
@@ -8,7 +8,8 @@ def parse_config_file(src: str) -> Config:
     config = Config() 
     if "project" not in data:
         print(NO_PROJECT_NAME)
-        return
+        # TODO: Thing about this. Seems lazy
+        exit(0)
     
     config.set_name(data["project"])
 
@@ -20,5 +21,22 @@ def parse_config_file(src: str) -> Config:
 
     if "excluded_dirs" in data:
         config.set_excluded_dirs(data['excluded_dirs'])
+
+    if "index" in data:
+        indexData = data['index']
+        if "type" in indexData:
+            typ = indexData["type"].lower()
+            if typ == 'vector':
+                config.set_index_type(IndexType.VECTOR)
+            if typ == 'tree':
+                config.set_index_type(IndexType.TREE)
+        if "verbose" in indexData:
+            verbose = indexData['verbose']
+            # Check if verbose if a boolean
+            if type(verbose) == bool:
+                config.set_verbose(verbose)
+            else:
+                print(NON_BOOLEAN("index.verbose"))
+
 
     return config

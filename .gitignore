@@ -1,5 +1,4 @@
 .venv
-.bootstrap
 .boot
 __pycache__
 build
