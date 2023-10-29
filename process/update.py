@@ -14,7 +14,7 @@ class UpdateProcess(Process):
         self.client = client
 
     def update_index(self, new: List[str], updated: List[str], deleted: List[str]):
-        index = self.client.load_index()
+        index = self.client.load_index(self.config.llm_params.model_type)
         docs = []
         for file in new:
             doc = self.client.generate_doc(file)
