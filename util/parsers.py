@@ -1,6 +1,6 @@
 import yaml
-from data.config import Config, IndexType
-from data.errors import NO_PROJECT_NAME, NON_BOOLEAN
+from data.config import Config, IndexType, ModelType
+from data.errors import INVALID_VALUE, NO_PROJECT_NAME, NON_BOOLEAN
 
 
 def parse_config_file(src: str) -> Config:
@@ -21,6 +21,17 @@ def parse_config_file(src: str) -> Config:
 
     if "excluded_dirs" in data:
         config.set_excluded_dirs(data['excluded_dirs'])
+
+    if "llm" in data:
+        llm_data = data['llm']
+        if "model" in llm_data:
+            model_type = llm_data['model']
+            if model_type == ModelType.GPT3.value[0]:
+                config.set_model_type(ModelType.GPT3)
+            elif model_type == ModelType.GPT4.value[0]:
+                config.set_model_type(ModelType.GPT4)
+            else:
+                print(INVALID_VALUE("llm.model"))
 
     if "index" in data:
         indexData = data['index']

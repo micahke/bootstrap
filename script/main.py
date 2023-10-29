@@ -50,7 +50,7 @@ def main():
 
     if args.command == 'ask':
         if args.prompt:
-            GenerationProcess(client, args.prompt).run()
+            GenerationProcess(config, client, args.prompt).run()
         else:
             print(NO_QUERY_PROVIDED)
 

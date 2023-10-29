@@ -2,6 +2,14 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Literal, Optional, List
 
+class ModelType(Enum):
+    GPT3 = ['gpt3', 'gpt-3.5-turbo']
+    GPT4 = ["gpt4", "gpt-4"]
+
+@dataclass
+class LLMParams:
+    model_type: ModelType
+
 class IndexType(Enum):
     VECTOR =  "vector"
     TREE = "tree"
@@ -18,6 +26,7 @@ class Config:
         self.filetypes: List[str] = []
         self.excluded_dirs: List[str] = []
         self.index_params = ConfigIndexParams(index_type=IndexType.VECTOR, verbose=False)
+        self.llm_params = LLMParams(model_type=ModelType.GPT3)
 
     def set_name(self, name: str):
         self.name = name
@@ -37,3 +46,6 @@ class Config:
 
     def set_verbose(self, verbose: bool):
         self.index_params.verbose = verbose
+
+    def set_model_type(self, model_type: ModelType):
+        self.llm_params.model_type = model_type

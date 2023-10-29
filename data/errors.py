@@ -10,3 +10,8 @@ def __non_boolean(field: str) -> str:
     return f"Non boolean value set for field '{field}'"
 
 NON_BOOLEAN = __non_boolean
+
+def __invalid_value(field: str) -> str:
+    return f"Invalid value for field '{field}"
+
+INVALID_VALUE = __invalid_value

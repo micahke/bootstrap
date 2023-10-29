@@ -23,7 +23,7 @@ class BuildProcess(Process):
             docs.append(doc)
 
         nodes = self.client.parse_nodes(docs)
-        index = self.client.generate_index_from_nodes(self.config.index_params.index_type, nodes, self.config.index_params.verbose)
+        index = self.client.generate_index_from_nodes(self.config.llm_params.model_type, self.config.index_params.index_type, nodes, self.config.index_params.verbose)
         self.client.save_index(index)
         print(f"Indexed {len(files)} file(s).")
         current_snapshot.save()
