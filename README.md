@@ -1,4 +1,4 @@
-# Bootstrap
+![](docs/banner.png)
 
 Bootstrap is a CLI tool that indexes your code project and allows you to make complex queries with the full scope of the project in context. It relies on the [llama-index](https://github.com/run-llama/llama_index) framework. Because this uses OpenAI's GPT models, an OpenAI API key will be required.
 
@@ -30,6 +30,14 @@ description: A small description of your project # Optional
 
 filetypes: [".py", ".md", ".txt"] # Required
 excluded_dirs: [".venv", "docs"] # Optional
+
+# Optional
+llm:
+  model: gpt3 # or gpt4
+
+index:
+  type: vector # or tree
+  verbose: true
 ```
 
 ## Usage
