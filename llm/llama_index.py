@@ -1,6 +1,7 @@
 import hashlib
 from typing import List
 from llama_index.indices.base import BaseIndex
+from llama_index.llms.utils import LLMType
 from llama_index.schema import BaseNode
 from llama_index.storage.docstore.simple_docstore import SimpleDocumentStore
 from llama_index.storage.index_store.simple_index_store import SimpleIndexStore
@@ -56,10 +57,9 @@ class LlamaClient:
         nodes = parser.get_nodes_from_documents(docs)
         return nodes
 
-    def generate_index_from_nodes(self, model_type: ModelType, index_type: IndexType, nodes: List[BaseNode], progress: bool = False) -> BaseIndex:
-        llm = OpenAI(model=model_type.value[1], temperature=0.1)
+    def generate_index_from_nodes(self, llm: LLMType, index_type: IndexType, nodes: List[BaseNode], progress: bool = False) -> BaseIndex:
         service_context = ServiceContext.from_defaults(
-            llm=llm
+            llm=llm,
         )
         index = None
         if index_type == IndexType.TREE:
@@ -88,14 +88,13 @@ class LlamaClient:
         index.storage_context.persist(storagepath)
 
 
-    def load_index(self, model: ModelType) -> BaseIndex:
+    def load_index(self, llm: LLMType) -> BaseIndex:
         storagepath = os.path.join(get_bootstrap_dir(), "storage")
         storage_context = StorageContext.from_defaults(
             docstore=SimpleDocumentStore.from_persist_dir(persist_dir=storagepath),
             vector_store=SimpleVectorStore.from_persist_dir(persist_dir=storagepath),
             index_store=SimpleIndexStore.from_persist_dir(persist_dir=storagepath),
         )
-        llm = OpenAI(model=model.value[1], temperature=0.1)
         service_context = ServiceContext.from_defaults(
             llm=llm
         )

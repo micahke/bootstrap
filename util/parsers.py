@@ -32,6 +32,13 @@ def parse_config_file(src: str) -> Config:
                 config.set_model_type(ModelType.GPT4)
             else:
                 print(INVALID_VALUE("llm.model"))
+    if "query" in data:
+        query_data = data['query']
+        if "temperature" in query_data:
+            config.set_temperature(query_data['temperature'])
+        if "max_tokens" in query_data:
+            config.set_max_tokens(query_data['max_tokens'])
+
 
     if "index" in data:
         indexData = data['index']

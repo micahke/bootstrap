@@ -1,4 +1,5 @@
-from typing import Any 
+from typing import Any
+from llama_index.llms import OpenAI 
 from data.config import Config
 from data.snapshot import Snapshot
 from llm.llama_index import LlamaClient
@@ -23,7 +24,8 @@ class BuildProcess(Process):
             docs.append(doc)
 
         nodes = self.client.parse_nodes(docs)
-        index = self.client.generate_index_from_nodes(self.config.llm_params.model_type, self.config.index_params.index_type, nodes, self.config.index_params.verbose)
+        llm = OpenAI(model=self.config.llm_params.model_type.value[1], temperature=self.config.temperature, max_tokens=self.config.max_tokens)
+        index = self.client.generate_index_from_nodes(llm, self.config.index_params.index_type, nodes, self.config.index_params.verbose)
         self.client.save_index(index)
         print(f"Indexed {len(files)} file(s).")
         current_snapshot.save()

@@ -1,7 +1,7 @@
 project: bootstrap
 description: A small tool to analyze your projects using AI
 
-filetypes: [".py", ".txt", ".yaml"]
+filetypes: [".py", ".txt"]
 excluded_dirs: [".venv", "build", "bootstrap.egg-info", ".git", ".github"]
 
 llm:
@@ -10,3 +10,6 @@ llm:
 index:
   type: vector
   verbose: true
+
+query:
+  temperature: 0.1
