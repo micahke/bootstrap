@@ -1,6 +1,7 @@
 import argparse
 from process.build import BuildProcess
 from process.delete import DeleteProcess
+from process.evaluator import Evaluator
 from process.generation import GenerationProcess
 from process.update import UpdateProcess
 from util.fs import config_exists, read_config, bootstrap_dir_exists, create_bootstrap_dir
@@ -14,9 +15,11 @@ subparsers = parser.add_subparsers(dest="command")
 
 build_parser = subparsers.add_parser("build")
 build_parser.add_argument("-v", "--verbose", action="store_true")
+build_parser.add_argument("-s", "--summary", action="store_true")
 
 update_parser = subparsers.add_parser("update")
 delete_parser = subparsers.add_parser("delete")
+delete_parser = subparsers.add_parser("eval")
 
 ask_parser = subparsers.add_parser("ask")
 ask_parser.add_argument('prompt', nargs="?", default="")
@@ -47,6 +50,9 @@ def main():
     if args.command == 'delete': 
         DeleteProcess().run()
         exit(0)
+
+    if args.command == 'eval':
+        Evaluator(config, client).run(args)
 
     if args.command == 'ask':
         if args.prompt:

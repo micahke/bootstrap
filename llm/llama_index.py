@@ -74,7 +74,6 @@ class LlamaClient:
         response = qe.query(prompt)
 
         print('\n')
-
         if hasattr(response, 'response_gen') and response.response_gen is not None:
             response_txt = ""
             for text in response.response_gen:
