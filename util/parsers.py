@@ -30,6 +30,8 @@ def parse_config_file(src: str) -> Config:
                 config.set_model_type(ModelType.GPT3)
             elif model_type == ModelType.GPT4.value[0]:
                 config.set_model_type(ModelType.GPT4)
+            elif model_type == ModelType.GPT4T.value[0]:
+                config.set_model_type(ModelType.GPT4T)
             else:
                 print(INVALID_VALUE("llm.model"))
     if "query" in data:

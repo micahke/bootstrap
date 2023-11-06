@@ -10,7 +10,7 @@ import openai
 import os
 from data.config import IndexType, ModelType
 from data.errors import NO_API_KEY
-from llama_index import Document, ServiceContext, StorageContext, TreeIndex, VectorStoreIndex, load_index_from_storage
+from llama_index import Document, OpenAIEmbedding, PromptHelper, ServiceContext, StorageContext, TreeIndex, VectorStoreIndex, load_index_from_storage
 from loader.customloader import CustomLoader
 from util.fs import read_file
 from llama_index.node_parser import SimpleNodeParser
@@ -87,7 +87,7 @@ class LlamaClient:
         index.storage_context.persist(storagepath)
 
 
-    def load_index(self, llm: LLMType) -> BaseIndex:
+    def load_index(self, llm: LLMType, promptHelper: PromptHelper) -> BaseIndex:
         storagepath = os.path.join(get_bootstrap_dir(), "storage")
         storage_context = StorageContext.from_defaults(
             docstore=SimpleDocumentStore.from_persist_dir(persist_dir=storagepath),
@@ -95,7 +95,9 @@ class LlamaClient:
             index_store=SimpleIndexStore.from_persist_dir(persist_dir=storagepath),
         )
         service_context = ServiceContext.from_defaults(
-            llm=llm
+            llm=llm,
+            prompt_helper=promptHelper,
+            embed_model=OpenAIEmbedding()
         )
         index = load_index_from_storage(storage_context)
         index._service_context = service_context

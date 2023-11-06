@@ -3,8 +3,10 @@ from enum import Enum
 from typing import Literal, Optional, List
 
 class ModelType(Enum):
-    GPT3 = ['gpt3', 'gpt-3.5-turbo']
-    GPT4 = ["gpt4", "gpt-4"]
+    GPT3 = ['gpt3', 'gpt-3.5-turbo-16k', 16385]
+    GPT4 = ["gpt4", "gpt-4", 8192]
+    GPT4T = ['gpt4t', "gpt-4-1106-preview", 128000]
+
 
 @dataclass
 class LLMParams:
