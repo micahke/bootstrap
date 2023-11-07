@@ -8,7 +8,7 @@ from data.snapshot import Snapshot
 from llm.llama_index import LlamaClient
 from process.process import Process
 from util.fs import snapshot_exists
-from util.walker import FileWalker
+from util.walker import FileWalker, FileWalkerMultiThreaded
 
 class UpdateProcess(Process):
     def __init__(self, config: Config, client: LlamaClient) -> None:
@@ -62,7 +62,7 @@ class UpdateProcess(Process):
 
 
     def run(self, args: Any = None):
-        files = FileWalker(self.config, ".").walk()
+        files = FileWalkerMultiThreaded(self.config, ".").walk()
         current_snapshot = Snapshot.build(files)
         if snapshot_exists():
             old_snapshot = Snapshot.load()

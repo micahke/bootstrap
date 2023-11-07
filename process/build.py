@@ -4,7 +4,7 @@ from data.config import Config
 from data.snapshot import Snapshot
 from llm.llama_index import LlamaClient
 from process.process import Process
-from util.walker import FileWalker
+from util.walker import FileWalkerMultiThreaded
 from llama_index.evaluation import DatasetGenerator
 
 class BuildProcess(Process):
@@ -17,7 +17,7 @@ class BuildProcess(Process):
     def run(self, args: Any = None):
         if args.verbose:
             self.config.set_verbose(True)
-        files = FileWalker(self.config, ".").walk()
+        files = FileWalkerMultiThreaded(self.config, ".").walk()
         current_snapshot = Snapshot.build(files)
         docs = []
         for file in files:
