@@ -5,7 +5,7 @@ filetypes: [".py"]
 excluded_dirs: [".venv", "build", "bootstrap.egg-info", ".git", ".github"]
 
 llm:
-  model: gpt4
+  model: gpt4t
 
 index:
   type: vector
