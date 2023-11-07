@@ -69,7 +69,7 @@ class LlamaClient:
 
     def parse_nodes(self, docs: List[Document]) -> List[BaseNode]:
         parser = SimpleNodeParser.from_defaults(
-            chunk_size=512,
+            chunk_size=1024,
             chunk_overlap=20
         )
         nodes = parser.get_nodes_from_documents(docs)
@@ -118,6 +118,6 @@ class LlamaClient:
             embed_model=OpenAIEmbedding()
         )
         index = load_index_from_storage(storage_context)
-        # index._service_context = service_context
-        index._service_context.llm_predictor = service_context.llm_predictor
+        index._service_context = service_context
+        # index._service_context.llm_predictor = service_context.llm_predictor
         return index

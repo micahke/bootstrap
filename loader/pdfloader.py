@@ -21,9 +21,12 @@ class PDFLoader(Loader):
     def load_doc(self) -> Document | None:
         try:
             text = ""
+            text2 = ""
             self.reader = PdfReader(self.filepath)
             for page in self.reader.pages:
                 text += page.extract_text() + "\n"
+                text2 += page.extract_text()
+            print(text2)
             doc = Document(
                 text=text
             )

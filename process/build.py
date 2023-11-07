@@ -23,6 +23,7 @@ class BuildProcess(Process):
         for file in files:
             doc = self.client.generate_doc(file)
             docs.append(doc)
+            print(f"Added {file.strip('./')}")
 
         if args.summary:
             self.summary(docs, args.verbose)
