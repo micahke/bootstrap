@@ -10,12 +10,30 @@ import openai
 import os
 from data.config import IndexType, ModelType
 from data.errors import NO_API_KEY
-from llama_index import Document, OpenAIEmbedding, PromptHelper, ServiceContext, StorageContext, TreeIndex, VectorStoreIndex, load_index_from_storage
+from llama_index import Document, OpenAIEmbedding, PromptHelper, PromptTemplate, ServiceContext, StorageContext, TreeIndex, VectorStoreIndex, load_index_from_storage
 from loader.customloader import CustomLoader
 from util.fs import read_file
 from llama_index.node_parser import SimpleNodeParser
 from llama_index.llms import OpenAI
 from util.fs import get_bootstrap_dir
+
+text_qa_template_str = (
+    "Context information is"
+    " below.\n---------------------\n{context_str}\n---------------------\nUsing"
+    " both the context information and also using your own knowledge, answer"
+    " the question: {query_str}\nIf the context isn't helpful, you can also"
+    " answer the question on your own.\n"
+)
+text_qa_template = PromptTemplate(text_qa_template_str)
+
+refine_template_str = (
+    "The original question is as follows: {query_str}\nWe have provided an"
+    " existing answer: {existing_answer}\nWe have the opportunity to refine"
+    " the existing answer (only if needed) with some more context"
+    " below.\n------------\n{context_msg}\n------------\nUsing both the new"
+    " context and your own knowledge, update or repeat the existing answer.\n"
+)
+refine_template = PromptTemplate(refine_template_str)
 
 class LlamaClient:
     def __init__(self) -> None:
@@ -100,5 +118,6 @@ class LlamaClient:
             embed_model=OpenAIEmbedding()
         )
         index = load_index_from_storage(storage_context)
-        index._service_context = service_context
+        # index._service_context = service_context
+        index._service_context.llm_predictor = service_context.llm_predictor
         return index
