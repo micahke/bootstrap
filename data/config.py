@@ -44,7 +44,6 @@ class Config:
     def set_excluded_dirs(self, excluded_dirs: List[str]):
         self.excluded_dirs = excluded_dirs
 
-
     def set_index_type(self, index_type: IndexType):
         self.index_params.index_type = index_type
 

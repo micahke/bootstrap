@@ -18,7 +18,7 @@ class GenerationProcess(Process):
         prompt_helper = PromptHelper(
           context_window=self.config.llm_params.model_type.value[2],
           num_output=self.config.max_tokens or 512,
-          chunk_overlap_ratio=0.1,
+          chunk_overlap_ratio=0.5,
           chunk_size_limit=None
         )
         index = self.client.load_index(llm, prompt_helper)
