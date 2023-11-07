@@ -2,7 +2,7 @@ import hashlib
 from typing import Any, List
 
 from llama_index import PromptHelper
-from llama_index.bridge.langchain import OpenAI
+from llama_index.llms import OpenAI
 from data.config import Config
 from data.snapshot import Snapshot
 from llm.llama_index import LlamaClient
