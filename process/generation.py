@@ -15,6 +15,7 @@ class GenerationProcess(Process):
 
     def run(self, args: Any = None):
         llm = OpenAI(model=self.config.llm_params.model_type.value[1], temperature=self.config.temperature, max_tokens=self.config.max_tokens)
+        print(self.config.max_tokens, self.config.llm_params.model_type.value[2])
         prompt_helper = PromptHelper(
           context_window=self.config.llm_params.model_type.value[2],
           num_output=self.config.max_tokens or 512,

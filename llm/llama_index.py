@@ -88,7 +88,7 @@ class LlamaClient:
 
 
     def query(self, index: BaseIndex, prompt: str):
-        qe = index.as_query_engine(streaming=True, similarity_top_k=25)
+        qe = index.as_query_engine(streaming=True, similarity_top_k=9999)
         response = qe.query(prompt)
 
         print('\n')
