@@ -1,4 +1,5 @@
 import argparse
+from data.chat import load_chat_history, new_chat
 from process.build import BuildProcess
 from process.delete import DeleteProcess
 from process.evaluator import Evaluator
@@ -18,6 +19,7 @@ build_parser.add_argument("-v", "--verbose", action="store_true")
 build_parser.add_argument("-s", "--summary", action="store_true")
 
 update_parser = subparsers.add_parser("update")
+new_parser = subparsers.add_parser("new")
 delete_parser = subparsers.add_parser("delete")
 delete_parser = subparsers.add_parser("eval")
 
@@ -53,6 +55,9 @@ def main():
 
     if args.command == 'eval':
         Evaluator(config, client).run(args)
+
+    if args.command == 'new':
+        new_chat()
 
     if args.command == 'ask':
         if args.prompt:

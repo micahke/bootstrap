@@ -1,5 +1,7 @@
 import hashlib
-from typing import List
+from typing import List, Optional
+from langchain.schema import chat_history
+from llama_index.chat_engine.types import ChatMode
 from llama_index.indices.base import BaseIndex
 from llama_index.llms.utils import LLMType
 from llama_index.schema import BaseNode
@@ -8,13 +10,14 @@ from llama_index.storage.index_store.simple_index_store import SimpleIndexStore
 from llama_index.vector_stores.simple import SimpleVectorStore
 import openai
 import os
+from data.chat import ChatHistory
 from data.config import IndexType, ModelType
 from data.errors import NO_API_KEY
 from llama_index import Document, OpenAIEmbedding, PromptHelper, PromptTemplate, ServiceContext, StorageContext, TreeIndex, VectorStoreIndex, load_index_from_storage
 from loader.customloader import CustomLoader
 from util.fs import read_file
 from llama_index.node_parser import SimpleNodeParser
-from llama_index.llms import OpenAI
+from llama_index.llms import ChatMessage, OpenAI
 from util.fs import get_bootstrap_dir
 
 text_qa_template_str = (
@@ -87,17 +90,27 @@ class LlamaClient:
         return index
 
 
-    def query(self, index: BaseIndex, prompt: str):
+    def query(self, index: BaseIndex, prompt: str, history: Optional[List[ChatMessage]] = None):
         qe = index.as_query_engine(streaming=True, similarity_top_k=9999)
-        response = qe.query(prompt)
+        ce = index.as_chat_engine(ChatMode.CONDENSE_QUESTION, chat_history=history)
+        chat_response = ce.stream_chat(prompt)
+        text_response = ""
+
+        # response = qe.query(prompt)
 
         print('\n')
-        if hasattr(response, 'response_gen') and response.response_gen is not None:
-            response_txt = ""
-            for text in response.response_gen:
-                print(text, end="", flush=True)
-                response_txt += text
+        # if hasattr(response, 'response_gen') and response.response_gen is not None:
+        #     response_txt = ""
+        #     for text in response.response_gen:
+        #         print(text, end="", flush=True)
+        #         response_txt += text
+        for token in chat_response.response_gen:
+            text_response += token
+            print(token, end="", flush=True)
         print("\n")
+        if history:
+            return text_response
+        return None
             
 
     def save_index(self, index: BaseIndex):
